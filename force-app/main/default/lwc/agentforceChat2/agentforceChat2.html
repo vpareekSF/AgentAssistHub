@@ -1,0 +1,122 @@
+<template>
+    <lightning-card title={cardTitle} icon-name="utility:einstein">
+        <lightning-tabset variant="scoped" class="slds-p-horizontal_x-small">
+            <lightning-tab label="Agent Assist">
+                <div class="rec-container" style={containerStyle}>
+                    <div class="message-log rec-list slds-p-horizontal_small slds-p-vertical_small">
+                        <template lwc:if={hasMessages}>
+                            <template for:each={messages} for:item="m">
+                                <div key={m.key} class="rec-item">
+                                    <template lwc:if={m.isRepPrompt}>
+                                        <div class="rep-prompt">
+                                            <lightning-icon
+                                                icon-name="utility:user"
+                                                size="xx-small"
+                                                class="rep-prompt-icon"
+                                            ></lightning-icon>
+                                            <span class="rep-prompt-label">You asked</span>
+                                            <span class="rep-prompt-text">{m.text}</span>
+                                        </div>
+                                    </template>
+
+                                    <template lwc:if={m.isRecommendation}>
+                                        <article class="rec-card">
+                                            <header class="rec-card-header">
+                                                <lightning-icon
+                                                    icon-name="utility:einstein"
+                                                    size="x-small"
+                                                    class="rec-card-icon"
+                                                ></lightning-icon>
+                                                <span class="rec-card-title">CCRA Recommends</span>
+                                            </header>
+                                            <p class="rec-card-caption slds-text-color_weak">{m.caption}</p>
+                                            <div class="rec-card-body">{m.text}</div>
+                                            <footer class="rec-card-footer">
+                                                <lightning-button
+                                                    label="Copy"
+                                                    icon-name="utility:copy_to_clipboard"
+                                                    variant="brand-outline"
+                                                    size="small"
+                                                    data-text={m.text}
+                                                    onclick={handleCopy}
+                                                ></lightning-button>
+                                            </footer>
+                                            <template lwc:if={m.showDiagnostic}>
+                                                <pre class="diagnostic slds-text-color_weak">{m.diagnostic}</pre>
+                                            </template>
+                                        </article>
+                                    </template>
+                                </div>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <div class="empty-state slds-text-color_weak slds-align_absolute-center">
+                                Analyzing the customer conversation. Recommendation will appear here.
+                            </div>
+                        </template>
+
+                        <template lwc:if={isLoading}>
+                            <article class="rec-card rec-card_loading">
+                                <header class="rec-card-header">
+                                    <lightning-icon
+                                        icon-name="utility:einstein"
+                                        size="x-small"
+                                        class="rec-card-icon"
+                                    ></lightning-icon>
+                                    <span class="rec-card-title">CCRA Recommends</span>
+                                </header>
+                                <span class="thinking-bubble">
+                                    <span class="thinking-text">Generating recommendation</span>
+                                    <span class="thinking-dots" aria-hidden="true">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </span>
+                                </span>
+                            </article>
+                        </template>
+                    </div>
+
+                    <div class="composer slds-grid slds-grid_vertical-align-end slds-p-around_x-small">
+                        <div class="slds-col slds-grow">
+                            <lightning-textarea
+                                name="agentInput"
+                                label="Message"
+                                variant="label-hidden"
+                                placeholder="Ask the assistant for a recommendation..."
+                                value={draft}
+                                onchange={handleInput}
+                                onkeyup={handleKeyUp}
+                                disabled={isLoading}
+                            ></lightning-textarea>
+                        </div>
+                        <div class="slds-col slds-no-flex slds-p-left_x-small">
+                            <lightning-button
+                                variant="brand"
+                                label="Ask"
+                                icon-name="utility:send"
+                                onclick={handleSend}
+                                disabled={isSendDisabled}
+                            ></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label={supervisorTabLabel}>
+                <template lwc:if={hasSupervisorUrl}>
+                    <iframe
+                        src={supervisorChatUrl}
+                        title={supervisorTabLabel}
+                        style={iframeStyle}
+                    ></iframe>
+                </template>
+                <template lwc:else>
+                    <div class="empty-state slds-text-color_weak slds-align_absolute-center slds-p-around_medium">
+                        Set the Supervisor Chat URL in the component properties to display content here.
+                    </div>
+                </template>
+            </lightning-tab>
+        </lightning-tabset>
+    </lightning-card>
+</template>

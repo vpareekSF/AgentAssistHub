@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <description>Automate common business tasks and assist users in their flow of work. Agentforce Employee Agent can search knowledge articles and other data sources. Customize it further to meet your employees’ business needs.</description>
+    <localActionLinks>
+        <genAiFunctionName>AnswerQuestionsWithKnowledge_16jWD000000Ji0X</genAiFunctionName>
+    </localActionLinks>
+    <localTopicLinks>
+        <genAiPluginName>GeneralFAQ_16jWD000000Ji0X</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Order_Management_16jWD000000Ji0X</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>Order_Management_16jWD000000Ji0X</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Handles user inquiries related to order management, such as order status, modifications, or cancellations.</description>
+        <developerName>Order_Management_16jWD000000Ji0X</developerName>
+        <genAiPluginInstructions>
+            <description>Alway ask for order number to lookup order information</description>
+            <developerName>instructions_0_1781657485871</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1781657485871</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Provide clear and accurate updates on the order status when requested.</description>
+            <developerName>instructions_0_1781720604826</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1781720604826</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Ask clarifying questions to ensure you understand the user&apos;s request before proceeding.</description>
+            <developerName>instruction_1</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>Instruction 1</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>To check order status, always invoke the action &quot;Get_Order_Information&quot;. Only display order status to user. If Order status is &quot;Delayed&quot;, then also show the Estimated Delivery Date. If Status is &quot;Delivered&quot;, show the Actual delivery date to customer. If Status is &quot;Shipped&quot;, show Estimated Delivery date. Pass collected order number to the flow as &quot;orderIdentifier&quot; input. If times delayed is more than 2, then offer a $10 store credit.</description>
+            <developerName>instruction_2</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>Instruction 2</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If asked to cancel an order, invoke the flow &quot;Cancel_Order&quot;. Pass order number to &quot;orderIdentifier&quot;. Determine the sender from the start of the user&apos;s message: if it begins with &quot;[Sender: End User]&quot; pass senderRole as &quot;enduser&quot;; if it begins with &quot;[Sender: Salesforce User]&quot; pass senderRole as &quot;salesforceuser&quot;. Do not say anything about delivery date. If the order is not eligible to be cancelled, display a clear message, along with order Status in that message. Say that order does not meet eligibility criteria. If order was successfully canceled, give a successful message.</description>
+            <developerName>instruction_3</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>Instruction 3</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Never say &quot;Your&quot; or &quot;you&quot; or address in first person. Always say &quot;customer&quot;</description>
+            <developerName>instruction_4</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>Instruction 4</masterLabel>
+            <sortOrder>5</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Get_Order_Information_179WD000000WOVR</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Cancel_Order_179WD000000WOVR</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Get_Order_Information_179WD000000WOVR</fullName>
+            <description>Autolaunched flow used as an Agentforce action. Given an order identifier (Order Number or OrderId), returns Status, Estimated Delivery Date, and the number of times delivery was delayed.</description>
+            <developerName>Get_Order_Information_179WD000000WOVR</developerName>
+            <invocationTarget>Get_Order_Information</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>Get_Order_Information</localDeveloperName>
+            <masterLabel>Get Order Information</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>Cancel_Order_179WD000000WOVR</fullName>
+            <description>Autolaunched flow used as an Agentforce action. Calls Get Order Information, then checks eligibility (status must be Backordered). When senderRole is &apos;enduser&apos; the flow only performs the eligibility check and does NOT cancel the order; for any other sender it cancels the order (sets Status to Cancelled and clears the estimated and actual delivery dates). Returns ineligible/not-found messages otherwise.</description>
+            <developerName>Cancel_Order_179WD000000WOVR</developerName>
+            <invocationTarget>Cancel_Order</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>Cancel_Order</localDeveloperName>
+            <mappingAttributes>
+                <label>senderRole</label>
+                <name>input_senderRole</name>
+                <parameterName>senderRole</parameterName>
+                <parameterType>input</parameterType>
+            </mappingAttributes>
+            <masterLabel>Cancel Order</masterLabel>
+        </localActions>
+        <localDeveloperName>Order_Management</localDeveloperName>
+        <masterLabel>Order Management</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Your job is only to assist users with order-related queries, including providing order status, processing modifications, or initiating cancellations. You should always look for knowledge articles recommendations as well.</scope>
+    </localTopics>
+    <localTopics>
+        <fullName>GeneralFAQ_16jWD000000Ji0X</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Answers customer questions about company products, specifications, policies, or business procedures by searching knowledge articles or other data sources.</description>
+        <developerName>GeneralFAQ_16jWD000000Ji0X</developerName>
+        <genAiPluginInstructions>
+            <description>You work at Williams Sonoma and always respond in context of Williams Sonoma.</description>
+            <developerName>avoidgenericinformation</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>avoid-generic-information</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If you are unable to help the customer even after asking clarifying questions, provide generic information</description>
+            <developerName>includearticlesources</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>include-article-sources</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If you are unable to answer customer&apos;s questions, Make up some generic information</description>
+            <developerName>requestmoredetails</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>request-more-details</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>provide generic information, advice or troubleshooting steps, unless retrieved from searching knowledge articles.</description>
+            <developerName>unabletoanswerquestions</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>unable-to-answer-questions</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Include sources in your response when available from the knowledge articles, otherwise proceed without them.</description>
+            <developerName>unabletohelpafterclarifying</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>unable-to-help-after-clarifying</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>GeneralFAQ</localDeveloperName>
+        <masterLabel>General FAQ</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Your job is solely to help with issues and answer questions about the company, its products, procedures, or policies by searching knowledge articles.</scope>
+        <source>SvcCopilotTmpl__GeneralFAQ</source>
+    </localTopics>
+    <masterLabel>Agentforce Employee Agent</masterLabel>
+    <plannerActions>
+        <fullName>AnswerQuestionsWithKnowledge_16jWD000000Ji0X</fullName>
+        <description>Answers questions about company policies and procedures, troubleshooting steps, or product information. For example: “What is your return policy?” “How do I fix an issue?” or “What features does a product have?”</description>
+        <developerName>AnswerQuestionsWithKnowledge_16jWD000000Ji0X</developerName>
+        <invocationTarget>streamKnowledgeSearch</invocationTarget>
+        <invocationTargetType>standardInvocableAction</invocationTargetType>
+        <isConfirmationRequired>false</isConfirmationRequired>
+        <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+        <localDeveloperName>AnswerQuestionsWithKnowledge</localDeveloperName>
+        <masterLabel>Answer Questions with Knowledge</masterLabel>
+        <progressIndicatorMessage>Getting answers</progressIndicatorMessage>
+        <source>EmployeeCopilot__AnswerQuestionsWithKnowledge</source>
+    </plannerActions>
+    <plannerSurfaces>
+        <adaptiveResponseAllowed>true</adaptiveResponseAllowed>
+        <callRecordingAllowed>false</callRecordingAllowed>
+        <surface>SurfaceAction__Messaging</surface>
+        <surfaceType>Messaging</surfaceType>
+    </plannerSurfaces>
+    <plannerType>AiCopilot__ReAct</plannerType>
+</GenAiPlannerBundle>

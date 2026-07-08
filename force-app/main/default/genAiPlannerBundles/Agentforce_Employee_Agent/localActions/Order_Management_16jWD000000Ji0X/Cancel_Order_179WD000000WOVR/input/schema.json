@@ -1,0 +1,20 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "orderIdentifier" : {
+      "title" : "orderIdentifier",
+      "description" : "Order Number (Name) or OrderId provided by the customer/agent.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "senderRole" : {
+      "title" : "senderRole",
+      "description" : "specifies if its customer or end user",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
